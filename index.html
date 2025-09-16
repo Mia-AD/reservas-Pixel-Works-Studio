@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pixel Works Studio — Reservaciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --c1:#7C4DFF;
+      --c2:#00C9FF;
+      --c3:#FF57B9;
+      --c4:#00FFA3;
+      --bg: linear-gradient(135deg, #7C4DFF, #00C9FF);
+      --card: rgba(255,255,255,0.13);
+      --glass: rgba(255,255,255,0.25);
+      --text:#0f172a;
+      --white:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, sans-serif;
+      color:var(--text);
+      background: radial-gradient(1200px 600px at 10% -20%, #9b59ff33, transparent),
+                  radial-gradient(900px 400px at 110% 0%, #00eaff33, transparent),
+                  linear-gradient(135deg, #f8fbff, #eef7ff);
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      background: linear-gradient(135deg,#7C4DFFcc,#00C9FFcc);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #ffffff33;
+    }
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    .nav{
+      display:flex; align-items:center; gap:16px; justify-content:space-between;
+    }
+    .brand{display:flex; align-items:center; gap:12px; color:white; text-decoration:none}
+    .brand img{width:52px;height:52px;border-radius:14px; box-shadow:0 6px 20px #00000022; object-fit:cover}
+    .brand h1{font-size:1.35rem; margin:0; letter-spacing:0.5px}
+    .pill{
+      padding:8px 14px; border-radius:999px; background:#ffffff26; color:white; font-weight:600; letter-spacing:.4px
+    }
+    .hero{
+      display:grid; grid-template-columns: 1fr 1fr; gap:28px; align-items:flex-start;
+      padding:42px 0 12px;
+    }
+    @media(max-width:768px){
+      .hero{grid-template-columns:1fr}
+    }
+    .card{
+      background:var(--card);
+      border:1px solid #ffffff55;
+      border-radius:28px;
+      padding:22px;
+      box-shadow: 0 20px 60px #00000012, inset 0 1px 0 #ffffff99;
+      backdrop-filter: blur(8px);
+      animation: floatIn .7s ease both;
+    }
+    @keyframes floatIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
+    .title{
+      font-size: clamp(28px, 4.2vw, 44px);
+      line-height:1.06; margin:0 0 10px;
+      background: linear-gradient(135deg, #7C4DFF, #00C9FF 40%, #FF57B9 75%, #00FFA3);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subtitle{margin:8px 0 16px; color:#243b53}
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    @media(max-width:600px){.grid-2{grid-template-columns:1fr}}
+    .badge{display:inline-block; padding:6px 12px; border-radius:999px; background:#0ea5e91a; border:1px dashed #0ea5e9; font-size:.9rem}
+    .stack{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .chip{padding:6px 10px; border-radius:10px; background:#ffffffaa; border:1px solid #e2e8f0}
+    form{
+      background:white; border-radius:24px; padding:22px; border:1px solid #e6ecf5;
+      box-shadow: 0 14px 40px #00000010;
+    }
+    label{font-weight:600; font-size:.95rem}
+    input, select, textarea{
+      width:100%; padding:12px 14px; border-radius:14px; border:1px solid #dbe3ef; margin-top:6px; outline:none;
+      transition: box-shadow .2s, transform .06s;
+      background:#f9fbff;
+    }
+    input:focus, select:focus, textarea:focus{
+      box-shadow: 0 0 0 4px #7C4DFF26, 0 0 0 1px #7C4DFF99 inset;
+      background:white;
+    }
+    textarea{min-height:110px; resize:vertical}
+    .row{display:grid; grid-template-columns: repeat(2, 1fr); gap:14px}
+    @media(max-width:600px){.row{grid-template-columns:1fr}}
+    .btn{
+      appearance:none; border:none;
+      padding:14px 18px; border-radius:14px; font-weight:800; letter-spacing:.4px;
+      background:linear-gradient(135deg, var(--c1), var(--c2));
+      color:white; cursor:pointer; box-shadow:0 10px 30px #7C4DFF55;
+      transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+      position:relative; overflow:hidden;
+    }
+    .btn:hover{transform: translateY(-1px) scale(1.01)}
+    .muted{color:#5b708b; font-size:.92rem}
+    .footer{padding:30px 0 60px; text-align:center; color:#345; opacity:.9}
+    .toast{
+      position: fixed; bottom: 18px; right: 18px; background: #111827; color:white; padding:14px 16px; border-radius:12px;
+      box-shadow: 0 10px 30px #00000040; z-index:40; display:none;
+    }
+    .table{
+      width:100%; border-collapse: collapse; margin-top:16px; background:white; border-radius:14px; overflow:hidden; border:1px solid #e6ecf5;
+    }
+    .table th, .table td{padding:12px 10px; border-bottom:1px solid #eef2f7; font-size:.95rem}
+    .status{font-weight:700}
+    .status.pend{color:#ef4444}
+    .status.att{color:#16a34a}
+    section.info{margin-top:40px}
+    section.info h3{color:var(--c1)}
+    section.info p{margin:8px 0 18px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <img src="c:\Users\vasqu\Downloads\WhatsApp Image 2025-09-02 at 3.13.22 PM.jpeg" alt="Pixel Works Studio logo">
+        <h1>Pixel Works Studio</h1>
+      </a>
+      <span class="pill">Software & Hardware Creativo</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="card">
+        <h2 class="title">¡Bienvenido a Pixel Works Studio!</h2>
+        <p class="subtitle">"Innovando tu mundo digital y tecnológico"</p>
+        <p>
+          Somos un estudio de tecnología con corazón creativo. Diseñamos <b>logotipos</b>, <b>páginas web</b> y <b>publicidad digital</b>.
+          Además, damos vida y mantenemos tu infraestructura con <b>mantenimiento de computadoras</b> e <b>impresoras</b>.
+        </p>
+        <div class="grid-2">
+          <div>
+            <span class="badge">Servicios de Software</span>
+            <div class="stack">
+              <span class="chip">Diseño de Logos</span>
+              <span class="chip">Páginas Web</span>
+              <span class="chip">Publicidad</span>
+            </div>
+          </div>
+          <div>
+            <span class="badge">Servicios de Hardware</span>
+            <div class="stack">
+              <span class="chip">Mantenimiento PC</span>
+              <span class="chip">Mantenimiento de Impresoras</span>
+            </div>
+          </div>
+        </div>
+        <p class="note">Contáctanos: <b>pixelworksstudio254@gmail.com</b></p>
+      </div>
+
+      <form id="reservaForm" class="card" autocomplete="on">
+        <h3 style="margin:0 0 8px;">Reserva tu cita</h3>
+        <div class="row">
+          <div>
+            <label>Nombre completo
+              <input required name="nombre" placeholder="Nombre y apellidos"/>
+            </label>
+          </div>
+          <div>
+            <label>Número telefónico
+              <input required name="telefono" type="tel" placeholder="+502 5555 5555"/>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Dirección
+              <input required name="direccion" placeholder="Zona, colonia, ciudad"/>
+            </label>
+          </div>
+          <div>
+            <label>Fecha y hora preferida
+              <input required name="fecha" type="datetime-local"/>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Tipo de servicio
+              <select required name="tipo" id="tipoServicio">
+                <option value="">Selecciona...</option>
+                <option value="software">Software</option>
+                <option value="hardware">Hardware</option>
+              </select>
+            </label>
+          </div>
+          <div>
+            <label>¿Qué quieres que hagamos?
+              <select required name="detalle" id="detalleServicio">
+                <option value="">Selecciona...</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <label>Especifica cómo lo quieres
+          <textarea name="especificaciones" placeholder="Cuéntanos tu idea o problema con detalles"></textarea>
+        </label>
+
+        <button class="btn" type="submit">Enviar reservación</button>
+
+        <p class="muted">Al enviar, aceptarás ser contactado a tu teléfono  para confirmar la cita. ¡Gracias!</p>
+      </form>
+    </section>
+
+    <section style="margin:26px 0 0;">
+      <h3>Mis reservaciones</h3>
+      <table class="table" id="misReservasTabla">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Servicio</th>
+            <th>Detalle</th>
+            <th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="info">
+      <h3>Misión</h3>
+      <p>Brindar soluciones integrales de software y hardware con innovación, creatividad y calidad, potenciando el éxito de nuestros clientes.</p>
+
+      <h3>Visión</h3>
+      <p>Ser líderes en el mercado tecnológico ofreciendo servicios confiables, modernos y accesibles que transformen la experiencia digital de las empresas y personas.</p>
+
+      <h3>Objetivos Generales</h3>
+      <ul>
+        <li>Desarrollar software creativo y funcional adaptado a las necesidades del cliente.</li>
+        <li>Ofrecer mantenimiento de hardware confiable y accesible.</li>
+        <li>Brindar un servicio personalizado y de calidad.</li>
+      </ul>
+
+      <h3>Eslogan</h3>
+      <p><i>"Transformamos tus ideas en soluciones digitales y tecnológicas"</i></p>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">Tu reservación será atendida ✅</div>
+
+  <footer class="footer">
+    © <span id="year"></span> Pixel Works Studio · pixelworksstudio254@gmail.com
+  </footer>
+
+<script>
+  const $ = (sel, el=document)=>el.querySelector(sel);
+  $("#year").textContent = new Date().getFullYear();
+
+  // Identificador único del cliente
+  const CLIENT_ID_KEY = "pws_client_id";
+  function getClientId(){
+    let id = localStorage.getItem(CLIENT_ID_KEY);
+    if(!id){
+      id = crypto.randomUUID();
+      localStorage.setItem(CLIENT_ID_KEY, id);
+    }
+    return id;
+  }
+  const clientId = getClientId();
+
+  // LocalStorage
+  const STORE_KEY = "pws_reservas";
+  function loadAll(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); }catch(e){ return []; } }
+  function saveAll(arr){ localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+
+  // Opciones de detalle según tipo
+  const detalleServicio = $("#detalleServicio");
+  const tipoServicio = $("#tipoServicio");
+  const options = {
+    software: ["Diseño de logo", "Página web", "Publicidad digital"],
+    hardware: ["Mantenimiento de computadoras", "Mantenimiento de impresoras"]
+  };
+  tipoServicio.addEventListener("change", ()=>{
+    detalleServicio.innerHTML = '<option value="">Selecciona...</option>';
+    if(options[tipoServicio.value]){
+      options[tipoServicio.value].forEach(v=>{
+        const op = document.createElement("option"); op.value=v; op.textContent=v;
+        detalleServicio.appendChild(op);
+      });
+    }
+  });
+
+  // Submit reserva
+  $("#reservaForm").addEventListener("submit", e=>{
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    const reserva = {
+      id: crypto.randomUUID(),
+      cliente: clientId,
+      nombre: data.nombre.trim(),
+      telefono: data.telefono.trim(),
+      direccion: data.direccion.trim(),
+      fecha: data.fecha,
+      tipo: data.tipo,
+      detalle: data.detalle,
+      especificaciones: data.especificaciones.trim(),
+      estado: "Pendiente",
+      notif:false,
+      createdAt: Date.now()
+    };
+    const all = loadAll(); all.push(reserva); saveAll(all);
+    e.target.reset(); detalleServicio.innerHTML = '<option value="">Selecciona...</option>';
+    renderMine(); toast("¡Reservación enviada! Te notificaremos cuando sea atendida.");
+  });
+
+  function toast(msg){
+    const t = $("#toast");
+    t.textContent = msg; t.style.display="block";
+    setTimeout(()=>t.style.display="none", 3800);
+  }
+
+  // Mostrar solo reservaciones del cliente
+  function renderMine(){
+    const tbody = $("#misReservasTabla tbody");
+    tbody.innerHTML = "";
+    const mine = loadAll().filter(r=>r.cliente===clientId).sort((a,b)=>b.createdAt-a.createdAt);
+    mine.forEach(r=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${new Date(r.fecha).toLocaleString()}</td>
+        <td>${r.tipo}</td>
+        <td>${r.detalle}</td>
+        <td class="status ${r.estado==='Pendiente' ? 'pend' : 'att'}">${r.estado}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  renderMine();
+</script>
+</body>
+</html>
